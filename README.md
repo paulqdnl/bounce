@@ -1,39 +1,56 @@
-# DVD Bounce for GitHub Pages
+# Bounce
 
-A dependency-free, full-screen bouncing logo built specifically for GitHub Pages and narrowcasting displays. No Node server is needed after deployment.
+A dependency-free DVD-style bouncing logo for narrowcasting screens. It fills the viewport, has no visible controls, and runs entirely in the browser on GitHub Pages.
 
-## Logo URL
+Repository: [github.com/paulqdnl/bounce](https://github.com/paulqdnl/bounce)
 
-Base64-encode the complete HTTPS image URL. URL-safe Base64 is recommended:
+## Use it
+
+Opening the site without a logo URL shows the default DVD mark:
+
+<https://paulqdnl.github.io/bounce/>
+
+To display another image, URL-safe Base64-encode its complete HTTPS URL:
 
 ```bash
 node -p "Buffer.from('https://example.com/logo.png').toString('base64url')"
 ```
 
-Append the result to the public Pages URL:
+Append the result to the Pages URL:
 
 ```text
-https://username.github.io/repository/aHR0cHM6Ly9leGFtcGxlLmNvbS9sb2dvLnBuZw
+https://paulqdnl.github.io/bounce/aHR0cHM6Ly9leGFtcGxlLmNvbS9sb2dvLnBuZw
 ```
 
-Standard Base64 is supported too. Invalid or unavailable images fall back silently to the default DVD mark.
+Standard Base64 is also supported, but URL-safe Base64 is recommended because it avoids special path characters. Invalid or unavailable images fall back silently to the default DVD mark.
 
-## Build and test
+## Development
+
+The project has no runtime dependencies. Node is only used to assemble and test the static deployment files.
 
 ```bash
 npm run build
 npm test
 ```
 
-The static site is generated in `dist/`. Its `index.html` and `404.html` are deliberately self-contained so Base64 paths work without external asset paths.
+The build writes the deployable site to `dist/`:
 
-## Publish with GitHub Pages
+- `index.html` handles the Pages root.
+- `404.html` handles arbitrary Base64 image paths.
+- `.nojekyll` disables Jekyll processing.
 
-1. Push this repository to GitHub.
-2. Open **Settings → Pages**.
-3. Select **GitHub Actions** as the source.
-4. Push or merge a change into `main`, or run the workflow manually.
+The HTML files are self-contained, so no stylesheet or script asset paths can break when the site is opened at a nested Base64 route.
 
-The workflow under `.github/workflows/` detects the repository’s Pages base path, builds the static files, and deploys them automatically.
+## Deployment
 
-GitHub Pages serves arbitrary Base64 paths through the custom `404.html` entry point. The animation still renders, although the initial response for such a path has HTTP status 404 because GitHub Pages does not support route rewrites.
+The workflow in `.github/workflows/deploy-pages.yml` builds and deploys the site whenever `main` changes. It also supports manual runs.
+
+To enable the first deployment:
+
+1. Open [the repository’s Pages settings](https://github.com/paulqdnl/bounce/settings/pages).
+2. Select **GitHub Actions** as the publishing source.
+3. Merge or push a change to `main`, or run the workflow manually.
+
+## GitHub Pages routing
+
+GitHub Pages cannot rewrite arbitrary routes to `index.html`. This project therefore publishes the same application as both `index.html` and `404.html`. A Base64 route still renders the animation, but its initial HTTP response has status `404`. Browser-based narrowcasting players normally render that response body; clients that reject non-200 responses will need a host with rewrite support.

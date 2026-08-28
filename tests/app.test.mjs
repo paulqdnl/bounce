@@ -6,6 +6,7 @@ import test from "node:test";
 const require = createRequire(import.meta.url);
 const {
   decodeImageUrl,
+  encodedImageFromHash,
   encodedImageFromPath,
   normalizeBasePath,
 } = require("../src/app.cjs");
@@ -29,6 +30,15 @@ test("extracts the encoded route beneath a GitHub project base path", () => {
   assert.equal(encodedImageFromPath(`/${encoded}`, "/"), encoded);
 });
 
+test("extracts the encoded image URL from a hash route", () => {
+  const encoded = Buffer.from("https://example.com/logo.png").toString("base64url");
+
+  assert.equal(encodedImageFromHash(`#${encoded}`), encoded);
+  assert.equal(encodedImageFromHash(`#/${encoded}`), encoded);
+  assert.equal(encodedImageFromHash(""), null);
+  assert.equal(encodedImageFromHash("#"), null);
+});
+
 test("builds self-contained index and 404 entry points", async () => {
   const [index, notFound] = await Promise.all([
     readFile(new URL("../dist/index.html", import.meta.url), "utf8"),
@@ -38,6 +48,7 @@ test("builds self-contained index and 404 entry points", async () => {
   assert.equal(index, notFound);
   assert.match(index, /window\.__DVD_BOUNCE_BASE_PATH__ = "\/dvd-bounce"/);
   assert.match(index, /function decodeImageUrl/);
+  assert.match(index, /window\.location\.hash/);
   assert.match(index, /class="screensaver"/);
   assert.doesNotMatch(
     index,

@@ -21,6 +21,11 @@ function encodedImageFromPath(pathname, basePath = "/") {
   return encoded || null;
 }
 
+function encodedImageFromHash(hash) {
+  const encoded = String(hash || "").replace(/^#\/?/, "");
+  return encoded || null;
+}
+
 function decodeImageUrl(encodedValue) {
   if (!encodedValue) return null;
   let encoded = String(encodedValue);
@@ -56,7 +61,9 @@ function startScreensaver() {
   if (!stage || !logo || !customLogo || !defaultLogo) return;
 
   const basePath = window.__DVD_BOUNCE_BASE_PATH__ || "/";
-  const encodedImage = encodedImageFromPath(window.location.pathname, basePath);
+  const encodedImage =
+    encodedImageFromHash(window.location.hash) ||
+    encodedImageFromPath(window.location.pathname, basePath);
   const imageUrl = decodeImageUrl(encodedImage);
   const position = { x: 36, y: 36 };
   const velocity = { x: SPEED, y: SPEED * 0.72 };
@@ -145,6 +152,7 @@ if (typeof document !== "undefined") {
 if (typeof module !== "undefined") {
   module.exports = {
     decodeImageUrl,
+    encodedImageFromHash,
     encodedImageFromPath,
     normalizeBasePath,
   };

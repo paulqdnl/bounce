@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#030405" />
+    <meta
+      name="description"
+      content="A full-screen bouncing logo for narrowcasting displays."
+    />
+    <title>DVD Bounce</title>
+    <style>
+/* __DVD_BOUNCE_STYLES__ */
+    </style>
+  </head>
+  <body>
+    <main id="screensaver" class="screensaver" aria-label="Bouncing logo screensaver">
+      <div class="ambient ambient-one"></div>
+      <div class="ambient ambient-two"></div>
+
+      <div id="bouncing-logo" class="bouncing-logo">
+        <img id="custom-logo" alt="" draggable="false" />
+        <div id="default-logo" class="default-logo" aria-label="DVD">
+          <span>DVD</span>
+          <i></i>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      window.__DVD_BOUNCE_BASE_PATH__ = __DVD_BOUNCE_BASE_PATH_JSON__;
+    </script>
+    <script>
+/* __DVD_BOUNCE_SCRIPT__ */
+    </script>
+  </body>
+</html>

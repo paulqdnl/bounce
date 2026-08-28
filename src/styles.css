@@ -1,0 +1,138 @@
+:root {
+  --accent-hue: 194;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #030405;
+}
+
+.screensaver {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 42%, hsl(var(--accent-hue) 42% 9% / 0.2), transparent 38%),
+    linear-gradient(145deg, #08090b 0%, #030405 48%, #08090c 100%);
+  color: #f7f8fb;
+  isolation: isolate;
+  transition: background 600ms ease;
+}
+
+.screensaver::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  pointer-events: none;
+  background-image: linear-gradient(rgb(255 255 255 / 0.018) 1px, transparent 1px);
+  background-size: 100% 4px;
+  opacity: 0.4;
+}
+
+.screensaver::after {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  content: "";
+  pointer-events: none;
+  box-shadow: inset 0 0 150px rgb(0 0 0 / 0.72);
+}
+
+.ambient {
+  position: absolute;
+  z-index: -1;
+  width: 42vw;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: hsl(var(--accent-hue) 90% 55% / 0.055);
+  filter: blur(90px);
+  transition: background 650ms ease;
+}
+
+.ambient-one {
+  top: -26vw;
+  right: -11vw;
+}
+
+.ambient-two {
+  bottom: -31vw;
+  left: -16vw;
+}
+
+.bouncing-logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: clamp(108px, 16vw, 246px);
+  max-height: 22vh;
+  will-change: transform;
+  user-select: none;
+  filter:
+    drop-shadow(0 0 10px hsl(var(--accent-hue) 90% 60% / 0.26))
+    drop-shadow(0 14px 28px rgb(0 0 0 / 0.38));
+  transition: filter 350ms ease;
+}
+
+.bouncing-logo img {
+  display: none;
+  width: 100%;
+  height: auto;
+  max-height: 22vh;
+  object-fit: contain;
+}
+
+.default-logo {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1.75;
+  color: hsl(var(--accent-hue) 88% 64%);
+  transition: color 320ms ease;
+}
+
+.default-logo span {
+  font-family: Arial Black, Arial, sans-serif;
+  font-size: clamp(2.9rem, 7.8vw, 7.2rem);
+  font-style: italic;
+  font-weight: 950;
+  line-height: 0.72;
+  letter-spacing: -0.13em;
+  transform: skewX(-8deg) translateX(-0.05em);
+}
+
+.default-logo i {
+  position: absolute;
+  bottom: 8%;
+  left: 9%;
+  width: 82%;
+  height: 16%;
+  border: 0.11em solid currentColor;
+  border-radius: 50%;
+  transform: skewX(-12deg);
+}
+
+@media (max-width: 620px) {
+  .bouncing-logo {
+    width: clamp(96px, 28vw, 150px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient,
+  .bouncing-logo,
+  .default-logo,
+  .screensaver {
+    transition: none;
+  }
+}

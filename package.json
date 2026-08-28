@@ -1,0 +1,14 @@
+{
+  "name": "dvd-bounce-github-pages",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A static, full-screen bouncing logo for GitHub Pages.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "npm run build -- /dvd-bounce && node --test tests/*.test.mjs"
+  }
+}
